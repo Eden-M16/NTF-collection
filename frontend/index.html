@@ -1,139 +1,320 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My NFT Gallery</title>
+    <title>My NFT Gallery | Full Contract Address</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1a3a 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0;
-            padding: 20px;
+            padding: 24px;
         }
         
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(0px);
+            border-radius: 32px;
+            padding: 36px 32px;
+            max-width: 560px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
         }
         
         h1 {
-            color: #333;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #a855f7 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .subhead {
+            color: #5b6e8c;
+            margin-bottom: 28px;
+            font-weight: 500;
+            border-bottom: 2px dotted #e2e8f0;
+            display: inline-block;
+            padding-bottom: 6px;
         }
         
         button {
             width: 100%;
-            padding: 15px;
+            padding: 14px 20px;
             margin: 10px 0;
             border: none;
-            border-radius: 10px;
+            border-radius: 60px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         button:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            filter: brightness(1.02);
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(1px);
         }
         
         .connect-btn {
-            background: #333;
+            background: #1e293b;
             color: white;
+            border: 1px solid #334155;
+        }
+        
+        .connect-btn:hover {
+            background: #0f172a;
         }
         
         .mint-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(95deg, #667eea 0%, #c084fc 100%);
             color: white;
+            border: none;
+            font-size: 1.05rem;
         }
         
         .info-btn {
-            background: #28a745;
+            background: #2d3e5f;
             color: white;
+            border: none;
+        }
+        
+        .info-btn:hover {
+            background: #1e2a44;
         }
         
         .info-box {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            background: #f8fafc;
+            padding: 20px 18px;
+            border-radius: 24px;
             margin: 20px 0;
             text-align: left;
+            border: 1px solid #e9eef3;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
         
-        .status {
-            padding: 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: none;
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
         }
         
-        .success {
-            background: #d4edda;
-            color: #155724;
+        .info-label {
+            font-weight: 600;
+            color: #334155;
+            letter-spacing: -0.2px;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: #0f172a;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            background: #eef2ff;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            word-break: break-word;
+            max-width: 65%;
+            text-align: right;
+        }
+        
+        .balance-big {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #a855f7);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .address-block {
+            background: #0f172a;
+            padding: 14px 16px;
+            border-radius: 18px;
+            margin-top: 18px;
+            border: 1px solid #2d3a5e;
+            transition: all 0.2s;
+        }
+        
+        .address-block:hover {
+            background: #1a253c;
+            border-color: #667eea;
+        }
+        
+        .full-contract-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 8px;
             display: block;
         }
         
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-        
-        .loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            display: block;
-        }
-        
-        .address {
-            font-family: monospace;
-            font-size: 12px;
+        .full-contract-value {
+            font-family: 'SF Mono', 'Menlo', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            background: #00000030;
+            padding: 8px 10px;
+            border-radius: 14px;
             word-break: break-all;
-            background: #e9ecef;
-            padding: 8px;
-            border-radius: 5px;
-            margin-top: 10px;
+            color: #cbd5e6;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         
-        .balance {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
+        .copy-btn {
+            background: #2d3e5f;
+            border: none;
+            color: white;
+            font-size: 0.7rem;
+            padding: 5px 12px;
+            border-radius: 40px;
+            margin-top: 8px;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+        
+        .copy-btn:hover {
+            background: #4f6b8f;
+            transform: scale(0.97);
         }
         
         .network-badge {
-            background: #ffc107;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-top: 10px;
-            display: inline-block;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .status {
+            padding: 12px 16px;
+            border-radius: 28px;
+            margin: 16px 0 0;
+            display: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            backdrop-filter: blur(4px);
+        }
+        
+        .success {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 4px solid #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-left: 4px solid #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .loading {
+            background: #e0f2fe;
+            color: #0e5b8c;
+            border-left: 4px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        hr {
+            margin: 16px 0 8px;
+            border-color: #eef2ff;
+        }
+        
+        button:disabled {
+            opacity: 0.7;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 500px) {
+            .card {
+                padding: 24px 18px;
+            }
+            .info-value {
+                max-width: 55%;
+                font-size: 0.75rem;
+            }
+            .full-contract-value {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>🎨 My NFT Collection</h1>
-        <p>Mint your own unique NFT!</p>
+        <h1>🎨 NFT Gallery</h1>
+        <div class="subhead">✨ Mint exclusive digital collectibles</div>
         
         <button class="connect-btn" id="connectBtn">🔌 Connect MetaMask</button>
         
         <div id="walletInfo" style="display: none;">
             <div class="info-box">
-                <p>📡 <strong>Your Wallet:</strong> <span id="walletAddress"></span></p>
-                <p>🖼️ <strong>NFTs You Own:</strong> <span id="nftBalance" class="balance">0</span></p>
-                <p>📊 <strong>Total NFTs Minted:</strong> <span id="totalSupply">0</span></p>
-                <div class="address" id="contractAddress"></div>
-                <div id="networkInfo" class="network-badge"></div>
+                <div class="info-row">
+                    <span class="info-label">👛 Wallet:</span>
+                    <span class="info-value" id="walletAddress"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🖼️ Your NFTs:</span>
+                    <span class="info-value"><span id="nftBalance" class="balance-big">0</span> owned</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📊 Total minted:</span>
+                    <span class="info-value" id="totalSupply">0</span>
+                </div>
+                <div id="networkInfo" class="network-badge" style="margin-top: 6px;">🌐 Network: —</div>
+                
+                <!-- FULL CONTRACT ADDRESS SECTION (PROMINENT, FULL, COPYABLE) -->
+                <div class="address-block" id="fullContractBlock">
+                    <div class="full-contract-label">📜 SMART CONTRACT (FULL ADDRESS)</div>
+                    <div class="full-contract-value" id="fullContractAddress">0xfb83C8f3f1ab674AD1a1428F942C786DD1Ac88D5</div>
+                    <button class="copy-btn" id="copyContractBtn">📋 Copy full address</button>
+                </div>
             </div>
             
             <button class="mint-btn" id="mintBtn">✨ Mint New NFT</button>
@@ -145,10 +326,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
     <script>
-        // ✅ YOUR ACTUAL CONTRACT ADDRESS FROM REMIX!
+        // ✅ YOUR ACTUAL CONTRACT ADDRESS FROM REMIX (full, unchanged)
         const CONTRACT_ADDRESS = "0xfb83C8f3f1ab674AD1a1428F942C786DD1Ac88D5";
         
-        // Contract ABI
+        // Contract ABI (mint + totalSupply + balanceOf)
         const CONTRACT_ABI = [
             {
                 "inputs": [],
@@ -177,113 +358,218 @@
         let contract;
         let userAddress;
         
-        async function connectWallet() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    userAddress = accounts[0];
-                    
-                    web3 = new Web3(window.ethereum);
-                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-                    
-                    const chainId = await web3.eth.getChainId();
-                    let networkName = "Unknown";
-                    if (chainId === 1) networkName = "Ethereum Mainnet";
-                    else if (chainId === 11155111) networkName = "Sepolia Testnet ✅";
-                    else if (chainId === 80001) networkName = "Mumbai Testnet";
-                    else if (chainId === 31337) networkName = "Localhost";
-                    
-                    document.getElementById("connectBtn").style.display = "none";
-                    document.getElementById("walletInfo").style.display = "block";
-                    document.getElementById("walletAddress").innerHTML = userAddress.slice(0,8) + "..." + userAddress.slice(-6);
-                    document.getElementById("contractAddress").innerHTML = "📄 Contract: " + CONTRACT_ADDRESS.slice(0,12) + "..." + CONTRACT_ADDRESS.slice(-8);
-                    document.getElementById("networkInfo").innerHTML = "🌐 Network: " + networkName;
-                    
-                    await loadInfo();
-                    showStatus("✅ Connected to " + networkName + "!", "success");
-                    
-                } catch (error) {
-                    showStatus("❌ Failed to connect: " + error.message, "error");
-                }
-            } else {
-                alert("Please install MetaMask!");
-            }
+        // Helper: display status with auto-hide
+        function showStatus(message, type, duration = 5000) {
+            const statusDiv = document.getElementById("status");
+            statusDiv.innerHTML = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = "flex";
+            setTimeout(() => {
+                statusDiv.style.display = "none";
+                statusDiv.className = "status";
+            }, duration);
         }
         
+        // Copy contract address function (full)
+        function copyContractAddress() {
+            const fullAddr = CONTRACT_ADDRESS;
+            if (!fullAddr) return;
+            navigator.clipboard.writeText(fullAddr).then(() => {
+                showStatus("📋 Contract address copied to clipboard: " + fullAddr.slice(0,10)+"..."+fullAddr.slice(-8), "success", 2500);
+            }).catch(() => {
+                showStatus("⚠️ Could not copy manually, but address is visible above", "error");
+            });
+        }
+        
+        // Load totalSupply + user balance
         async function loadInfo() {
-            if (!contract) return;
+            if (!contract || !userAddress) {
+                return;
+            }
             
             try {
+                // Show loading indicator on refresh
+                const totalSpan = document.getElementById("totalSupply");
+                const balanceSpan = document.getElementById("nftBalance");
+                if (totalSpan) totalSpan.innerHTML = "⏳";
+                if (balanceSpan) balanceSpan.innerHTML = "⏳";
+                
                 const supply = await contract.methods.totalSupply().call();
-                document.getElementById("totalSupply").innerHTML = supply;
+                document.getElementById("totalSupply").innerHTML = supply.toString();
                 
                 const balance = await contract.methods.balanceOf(userAddress).call();
-                document.getElementById("nftBalance").innerHTML = balance;
+                document.getElementById("nftBalance").innerHTML = balance.toString();
                 
                 if (balance > 0) {
-                    showStatus(`🎉 You own ${balance} NFT(s)!`, "success");
+                    showStatus(`🎉 You own ${balance} unique NFT(s)! Congrats!`, "success", 3000);
+                } else {
+                    // optional subtle status
                 }
             } catch (error) {
-                console.error("Error:", error);
-                showStatus("⚠️ Make sure MetaMask is on Sepolia network!", "error");
+                console.error("Load info error:", error);
+                showStatus("⚠️ Failed to fetch contract data. Make sure you're on correct network (Sepolia/Localhost).", "error");
+                document.getElementById("totalSupply").innerHTML = "?";
+                document.getElementById("nftBalance").innerHTML = "0";
             }
         }
         
+        // Mint NFT
         async function mintNFT() {
-            if (!contract) {
-                showStatus("Please connect wallet first!", "error");
+            if (!contract || !userAddress) {
+                showStatus("🔌 Please connect your wallet first.", "error");
                 return;
             }
             
             const mintBtn = document.getElementById("mintBtn");
+            const originalText = mintBtn.textContent;
             mintBtn.disabled = true;
-            mintBtn.textContent = "⏳ Minting...";
+            mintBtn.textContent = "⏳ Minting in progress...";
             
             try {
-                showStatus("🔄 Creating your NFT... Confirm in MetaMask", "loading");
+                showStatus("🔄 Preparing mint transaction... Please confirm in MetaMask", "loading", 0);
                 
                 const tx = await contract.methods.mint().send({
                     from: userAddress,
                     gas: 300000
                 });
                 
-                showStatus(`✅ NFT Minted! 🎉`, "success");
-                await loadInfo();
+                showStatus(`✅ SUCCESS! NFT minted! 🎉 Transaction: ${tx.transactionHash.slice(0,10)}...`, "success", 6000);
+                await loadInfo(); // refresh balance + total supply
                 
             } catch (error) {
-                console.error("Mint error:", error);
+                console.error("Mint error details:", error);
+                let errorMsg = "❌ Mint failed: ";
                 if (error.message.includes("user rejected")) {
-                    showStatus("❌ Transaction was rejected", "error");
+                    errorMsg += "Transaction was rejected in MetaMask.";
                 } else if (error.message.includes("insufficient funds")) {
-                    showStatus("❌ Need Sepolia ETH! Get free from faucet", "error");
+                    errorMsg += "Insufficient Sepolia ETH. Get free test ETH from faucet (Sepolia).";
+                } else if (error.message.includes("execution reverted")) {
+                    errorMsg += "Contract execution reverted. Maybe max supply reached or mint paused?";
                 } else {
-                    showStatus("❌ Error: " + error.message.slice(0, 100), "error");
+                    errorMsg += error.message.slice(0, 120);
                 }
+                showStatus(errorMsg, "error", 7000);
             } finally {
                 mintBtn.disabled = false;
-                mintBtn.textContent = "✨ Mint New NFT";
+                mintBtn.textContent = originalText;
             }
         }
         
-        function showStatus(message, type) {
-            const statusDiv = document.getElementById("status");
-            statusDiv.textContent = message;
-            statusDiv.className = `status ${type}`;
-            setTimeout(() => {
-                statusDiv.style.display = "none";
-                statusDiv.className = "status";
-            }, 5000);
+        // Connect wallet with full contract visibility
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request accounts
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAddress = accounts[0];
+                    
+                    // Initialize web3 & contract
+                    web3 = new Web3(window.ethereum);
+                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    
+                    // Get chain ID for network display
+                    const chainId = await web3.eth.getChainId();
+                    let networkName = "Unknown";
+                    let networkEmoji = "🌐";
+                    if (chainId === 1) networkName = "Ethereum Mainnet";
+                    else if (chainId === 11155111) { networkName = "Sepolia Testnet"; networkEmoji = "✅"; }
+                    else if (chainId === 80001) networkName = "Mumbai Testnet";
+                    else if (chainId === 31337) networkName = "Localhost (Hardhat/Ganache)";
+                    else if (chainId === 5) networkName = "Goerli Testnet";
+                    else networkName = `Chain ID: ${chainId}`;
+                    
+                    // Update UI elements
+                    document.getElementById("connectBtn").style.display = "none";
+                    document.getElementById("walletInfo").style.display = "block";
+                    document.getElementById("walletAddress").innerHTML = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
+                    document.getElementById("networkInfo").innerHTML = `${networkEmoji} Network: ${networkName}`;
+                    
+                    // ✅ FULL CONTRACT ADDRESS: explicitly show full unshortened address
+                    const fullContractSpan = document.getElementById("fullContractAddress");
+                    if (fullContractSpan) {
+                        fullContractSpan.innerText = CONTRACT_ADDRESS;
+                        fullContractSpan.style.fontFamily = "monospace";
+                        fullContractSpan.style.fontSize = "0.85rem";
+                        fullContractSpan.style.wordBreak = "break-all";
+                    }
+                    
+                    // Show full address in a dedicated line inside address block (already there)
+                    // Ensure copy button works
+                    const copyBtn = document.getElementById("copyContractBtn");
+                    if (copyBtn) {
+                        // remove any previous listener to avoid duplicates
+                        const newCopyBtn = copyBtn.cloneNode(true);
+                        copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+                        newCopyBtn.addEventListener("click", copyContractAddress);
+                    }
+                    
+                    // Load NFTs info
+                    await loadInfo();
+                    showStatus(`✅ Connected to ${networkName} | Contract: ${CONTRACT_ADDRESS.slice(0,12)}...${CONTRACT_ADDRESS.slice(-10)}`, "success", 4500);
+                    
+                    // Listen for account changes
+                    window.ethereum.on('accountsChanged', (newAccounts) => {
+                        if (newAccounts.length === 0) {
+                            userAddress = null;
+                            document.getElementById("connectBtn").style.display = "block";
+                            document.getElementById("walletInfo").style.display = "none";
+                            showStatus("👋 Wallet disconnected. Click connect again.", "error");
+                        } else {
+                            userAddress = newAccounts[0];
+                            document.getElementById("walletAddress").innerHTML = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
+                            loadInfo();
+                            showStatus("🔄 Account changed, NFT balance updated", "success", 2500);
+                        }
+                    });
+                    
+                    // Listen for chain changes
+                    window.ethereum.on('chainChanged', () => {
+                        window.location.reload();
+                    });
+                    
+                } catch (error) {
+                    console.error("Connection error:", error);
+                    showStatus("❌ Connection error: " + error.message, "error");
+                }
+            } else {
+                alert("🦊 MetaMask not detected! Please install MetaMask extension to use this NFT Gallery.");
+            }
         }
         
-        document.getElementById("connectBtn").addEventListener("click", connectWallet);
-        document.getElementById("mintBtn").addEventListener("click", mintNFT);
-        document.getElementById("refreshBtn").addEventListener("click", loadInfo);
+        // Refresh button handler
+        async function refreshHandler() {
+            if (!contract || !userAddress) {
+                showStatus("🔌 Please connect wallet first before refreshing.", "error");
+                return;
+            }
+            await loadInfo();
+            showStatus("🔄 NFT balances & total supply refreshed!", "success", 2000);
+        }
         
+        // Event listeners
+        document.getElementById("connectBtn").addEventListener("click", connectWallet);
+        
+        // Ensure mintBtn and refreshBtn listeners are attached after DOM ready, but we can attach now because elements exist.
+        const mintButton = document.getElementById("mintBtn");
+        const refreshButton = document.getElementById("refreshBtn");
+        
+        if (mintButton) mintButton.addEventListener("click", mintNFT);
+        if (refreshButton) refreshButton.addEventListener("click", refreshHandler);
+        
+        // Auto-connect if already authorized
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
-                if (accounts.length > 0) connectWallet();
-            });
+                if (accounts && accounts.length > 0) {
+                    // small delay to ensure DOM and all
+                    setTimeout(() => {
+                        connectWallet();
+                    }, 100);
+                }
+            }).catch(e => console.log("Auto-connect skipped:", e));
         }
+        
+        // Extra: show full contract address in console for dev visibility
+        console.log("🚀 NFT Gallery Loaded | Contract Address (full):", CONTRACT_ADDRESS);
     </script>
 </body>
 </html>
