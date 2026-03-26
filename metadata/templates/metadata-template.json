@@ -1,0 +1,74 @@
+{
+  "name": "NFT Name Here",
+  "description": "A detailed description of your NFT collection. Explain the art, utility, and value proposition.",
+  "image": "ipfs://QmExampleImageHash/image.png",
+  "animation_url": "ipfs://QmExampleAnimationHash/animation.mp4",
+  "external_url": "https://yourwebsite.com/nft/",
+  "background_color": "000000",
+  "youtube_url": "https://www.youtube.com/watch?v=example",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Gold"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Laser"
+    },
+    {
+      "trait_type": "Mouth",
+      "value": "Smile"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Crown"
+    },
+    {
+      "trait_type": "Accessory",
+      "value": "Glasses"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Legendary",
+      "display_type": "string"
+    },
+    {
+      "trait_type": "Power Level",
+      "value": 95,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Generation",
+      "value": 1,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Mint Date",
+      "value": 1698765432,
+      "display_type": "date"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "ipfs://QmExampleImageHash/image.png",
+        "type": "image/png"
+      },
+      {
+        "uri": "ipfs://QmExampleAnimationHash/animation.mp4",
+        "type": "video/mp4"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "0xYourWalletAddressHere",
+        "share": 100
+      }
+    ]
+  }
+}

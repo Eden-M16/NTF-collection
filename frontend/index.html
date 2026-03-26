@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My NFT Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.02);
+        }
+        
+        .connect-btn {
+            background: #333;
+            color: white;
+        }
+        
+        .mint-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .info-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            display: block;
+        }
+        
+        .address {
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            background: #e9ecef;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .balance {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .network-badge {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎨 My NFT Collection</h1>
+        <p>Mint your own unique NFT!</p>
+        
+        <button class="connect-btn" id="connectBtn">🔌 Connect MetaMask</button>
+        
+        <div id="walletInfo" style="display: none;">
+            <div class="info-box">
+                <p>📡 <strong>Your Wallet:</strong> <span id="walletAddress"></span></p>
+                <p>🖼️ <strong>NFTs You Own:</strong> <span id="nftBalance" class="balance">0</span></p>
+                <p>📊 <strong>Total NFTs Minted:</strong> <span id="totalSupply">0</span></p>
+                <div class="address" id="contractAddress"></div>
+                <div id="networkInfo" class="network-badge"></div>
+            </div>
+            
+            <button class="mint-btn" id="mintBtn">✨ Mint New NFT</button>
+            <button class="info-btn" id="refreshBtn">🔄 Refresh Info</button>
+        </div>
+        
+        <div id="status" class="status"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script>
+        // ✅ YOUR ACTUAL CONTRACT ADDRESS FROM REMIX!
+        const CONTRACT_ADDRESS = "0xfb83C8f3f1ab674AD1a1428F942C786DD1Ac88D5";
+        
+        // Contract ABI
+        const CONTRACT_ABI = [
+            {
+                "inputs": [],
+                "name": "mint",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "address","name": "owner","type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        
+        let web3;
+        let contract;
+        let userAddress;
+        
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAddress = accounts[0];
+                    
+                    web3 = new Web3(window.ethereum);
+                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    
+                    const chainId = await web3.eth.getChainId();
+                    let networkName = "Unknown";
+                    if (chainId === 1) networkName = "Ethereum Mainnet";
+                    else if (chainId === 11155111) networkName = "Sepolia Testnet ✅";
+                    else if (chainId === 80001) networkName = "Mumbai Testnet";
+                    else if (chainId === 31337) networkName = "Localhost";
+                    
+                    document.getElementById("connectBtn").style.display = "none";
+                    document.getElementById("walletInfo").style.display = "block";
+                    document.getElementById("walletAddress").innerHTML = userAddress.slice(0,8) + "..." + userAddress.slice(-6);
+                    document.getElementById("contractAddress").innerHTML = "📄 Contract: " + CONTRACT_ADDRESS.slice(0,12) + "..." + CONTRACT_ADDRESS.slice(-8);
+                    document.getElementById("networkInfo").innerHTML = "🌐 Network: " + networkName;
+                    
+                    await loadInfo();
+                    showStatus("✅ Connected to " + networkName + "!", "success");
+                    
+                } catch (error) {
+                    showStatus("❌ Failed to connect: " + error.message, "error");
+                }
+            } else {
+                alert("Please install MetaMask!");
+            }
+        }
+        
+        async function loadInfo() {
+            if (!contract) return;
+            
+            try {
+                const supply = await contract.methods.totalSupply().call();
+                document.getElementById("totalSupply").innerHTML = supply;
+                
+                const balance = await contract.methods.balanceOf(userAddress).call();
+                document.getElementById("nftBalance").innerHTML = balance;
+                
+                if (balance > 0) {
+                    showStatus(`🎉 You own ${balance} NFT(s)!`, "success");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showStatus("⚠️ Make sure MetaMask is on Sepolia network!", "error");
+            }
+        }
+        
+        async function mintNFT() {
+            if (!contract) {
+                showStatus("Please connect wallet first!", "error");
+                return;
+            }
+            
+            const mintBtn = document.getElementById("mintBtn");
+            mintBtn.disabled = true;
+            mintBtn.textContent = "⏳ Minting...";
+            
+            try {
+                showStatus("🔄 Creating your NFT... Confirm in MetaMask", "loading");
+                
+                const tx = await contract.methods.mint().send({
+                    from: userAddress,
+                    gas: 300000
+                });
+                
+                showStatus(`✅ NFT Minted! 🎉`, "success");
+                await loadInfo();
+                
+            } catch (error) {
+                console.error("Mint error:", error);
+                if (error.message.includes("user rejected")) {
+                    showStatus("❌ Transaction was rejected", "error");
+                } else if (error.message.includes("insufficient funds")) {
+                    showStatus("❌ Need Sepolia ETH! Get free from faucet", "error");
+                } else {
+                    showStatus("❌ Error: " + error.message.slice(0, 100), "error");
+                }
+            } finally {
+                mintBtn.disabled = false;
+                mintBtn.textContent = "✨ Mint New NFT";
+            }
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById("status");
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            setTimeout(() => {
+                statusDiv.style.display = "none";
+                statusDiv.className = "status";
+            }, 5000);
+        }
+        
+        document.getElementById("connectBtn").addEventListener("click", connectWallet);
+        document.getElementById("mintBtn").addEventListener("click", mintNFT);
+        document.getElementById("refreshBtn").addEventListener("click", loadInfo);
+        
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
+                if (accounts.length > 0) connectWallet();
+            });
+        }
+    </script>
+</body>
+</html>
